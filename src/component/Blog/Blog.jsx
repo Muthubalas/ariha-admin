@@ -134,7 +134,7 @@ function Blog() {
 .then(response=>{
   console.log(response.data.blogdetails
     );
-  setBlogData(prevData => [response.data.blogdetails, ...prevData]);
+  fetchData();
 }
   )
   .catch(error => {

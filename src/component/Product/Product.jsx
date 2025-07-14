@@ -8,6 +8,7 @@ import { FaRegEdit } from "react-icons/fa";
 import api from '../../services/api';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import CreatableSelect from 'react-select/creatable';
 
 
 
@@ -37,11 +38,23 @@ function Product() {
    product_image:"",
      short_description:"",
        long_description:"",
+       tag: []
 
   });
   
   const [productData, setProductData] = useState([]);
   const [editProductId, setEditProductId] = useState(null);
+  const [tagOptions, setTagOptions] = useState([]);
+  useEffect(() => {
+  setTagOptions([
+    { label: "spa", value: "spa" },
+    { label: "healthy", value: "healthy" },
+    { label: "facial", value: "facial" },
+  ]);
+}, []);
+const handleTagChange = (selected) => {
+  setNewProduct({ ...newProduct, tag: selected.map(item => item.value) });
+};
 
   const fileInputRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -65,6 +78,7 @@ function Product() {
    product_image:"",
      short_description:"",
        long_description:"",
+        tag: [] 
 
     });
     setImage(null);
@@ -110,6 +124,7 @@ function Product() {
       formData.append('product_image', product_image);
         formData.append('short_description', short_description);
           formData.append('long_description', long_description);
+           formData.append('tag', newProduct.tag.join(','));
 
           console.log("category",category);
           
@@ -138,8 +153,8 @@ function Product() {
       formData.append('product_image', product_image);
         formData.append('short_description', short_description);
           formData.append('long_description', long_description);
-   
-  
+            formData.append('tag', newProduct.tag.join(','));
+
      console.log("formData",category);
      
       api.post("/products", formData, {
@@ -150,7 +165,7 @@ function Product() {
 .then(response=>{
   console.log("data------------>",response.data
     );
-  setProductData(prevData => [response.data, ...prevData]);
+  fetchData();
 }
   )
   .catch(error => {
@@ -196,6 +211,9 @@ api.get(`/products`)
         category: productToEdit.category,
         price: productToEdit.price,
         stock: productToEdit.stock,
+          tag: Array.isArray(productToEdit.tag)
+    ? productToEdit.tag
+    : productToEdit.tag?.split(',').map((t) => t.trim()) || [],
         title: productToEdit.title,
         product_image: productToEdit.product_image,
          short_description: productToEdit.short_description,
@@ -362,6 +380,17 @@ api.get(`/products`)
                           className="form"
                         />
                       </Form.Group>
+                      <Form.Group className="mb-3">
+  <Form.Label>Tags</Form.Label>
+  <CreatableSelect
+    isMulti
+    value={newProduct.tag.map(t => ({ label: t, value: t }))}
+    onChange={handleTagChange}
+    options={tagOptions}
+    placeholder="Enter or select tags"
+  />
+</Form.Group>
+
                        <Form.Group className="mb-3" >
                         <Form.Label>Title </Form.Label>
                         <Form.Control
