@@ -47,9 +47,19 @@ function Product() {
   const [tagOptions, setTagOptions] = useState([]);
   useEffect(() => {
   setTagOptions([
-    { label: "spa", value: "spa" },
-    { label: "healthy", value: "healthy" },
-    { label: "facial", value: "facial" },
+    { label: "Healthy", value: "Healthy" },
+    { label: "Low fat", value: "Low fat" },
+    { label: "Vegetarian", value: "Vegetarian" },
+     { label: "Kid foods", value: "Kid foods" },
+      { label: "Vitamins", value: "Vitamins" },
+       { label: "Bread", value: "Bread" },
+        { label: "Meat", value: "Meat" },
+         { label: "Snacks", value: "Snacks" },
+          { label: "Tiffin", value: "Tiffin" },
+           { label: "Launch", value: "Launch" },
+            { label: "Dinner", value: "Dinner" },
+             { label: "Breackfast", value: "Breackfast" },
+              { label: "Fruit", value: "Fruit" }
   ]);
 }, []);
 const handleTagChange = (selected) => {
